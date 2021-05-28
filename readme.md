@@ -3,8 +3,6 @@
 This module will create a k3s HA deployment in a single AZ.  It uses the embedded [etcd](https://etcd.io/) for shared configuration across the control plane nodes, because of this it is requires that you follow the appropriate quorum guideline's for control plan nodes.
 
 **Upcoming Features**
-- Request Ip's from infoblox
-- Set DNS in infoblox
 - deploy [metallb](https://metallb.universe.tf/) with the cluster
 - deploy [prometheus](https://prometheus.io/) with the cluster
 
@@ -38,7 +36,7 @@ module "node" {
     source = "./k3s"
 
     # vsphere 
-    availability_zone   = "AZ1"
+    datacenter   = "AZ1"
 
     # k3s nodes
 
@@ -92,7 +90,7 @@ module "node" {
     source = "./k3s"
 
     # vsphere 
-    availability_zone   = "AZ1"
+    datacenter   = "AZ1"
     datastore_cluster   = "AZ1-Hosting-Gold"
     resource_pool       = "AZ1-DRS01/Resources"
     template            = "Ubuntu 20.04 Cloud Init"

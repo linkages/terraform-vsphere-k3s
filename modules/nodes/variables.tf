@@ -2,22 +2,19 @@
 # UF vSphere Info
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "datastore_cluster" {
+variable "datastore" {
+  description = "Datastore to deploy this VM into"
   type = string
 }
 
 variable "resource_pool" {
+  description = "Name of the resource pool where this VM will be deployed."
   type = string
 }
 
-variable "availability_zone" {
-  description = "Availability Zone (eg. AZ1, AZ2, AZ3) to deploy the VM into"
-  type        = string
-
-  validation {
-    condition     = contains(["AZ1", "AZ2", "AZ3"], var.availability_zone)
-    error_message = "The availability_zone variable must be one of: AZ1, AZ2, or AZ3."
-  }
+variable "vm_folder" {
+  description = "vSphere folder where VM will be deployed"
+  type = string
 }
 
 variable "template" {
@@ -64,48 +61,19 @@ variable "role_name" {
   }
 }
 
+variable "dns_domain" {
+  description = "DNS domain"
+  type = string
+}
+
+variable "cluster_name" {
+  description = "unique name for this cluster"
+  type = string
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # UF Customer Info
 # ---------------------------------------------------------------------------------------------------------------------
-
-variable "customer_name" {
-  description = "The business group name that the VM belongs to"
-  type        = string
-}
-
-variable "customer_number" {
-  description = "Customer number associated with the Business Group/Customer Name"
-  type        = string
-}
-variable "customer_tla" {
-  description = "Customer three letter acronym Group/Customer Name"
-  type        = string
-}
-
-variable "infrastructure_owner" {
-  description = "the UFIT unit that the VM belongs to"
-  type        = string
-}
-
-variable "service" {
-  description = "The service the VM supports"
-  type        = string
-}
-
-variable "ufit" {
-  description = "Does this VM belong to a UFIT unit true/false"
-  type        = string
-}
-
-variable "criticality" {
-  description = "Importance of the VM to Operations (e.g Low, Medium, High)"
-  type        = string
-}
-
-variable "environment" {
-  description = "environment (eg. lab, dev, test, qat, prod) to be used when calculating the vm name"
-  type        = string
-}
 
 variable "datacenter" {
   description = "datacenter (eg. SSRB, UFDC, Any)"

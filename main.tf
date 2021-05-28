@@ -18,9 +18,12 @@ module "control_plane_nodes" {
     source              = "./modules/nodes"
 
     # vsphere 
-    availability_zone   = var.availability_zone
-    datastore_cluster   = var.datastore_cluster
+    datacenter          = var.datacenter
+    datastore           = var.datastore
     resource_pool       = var.resource_pool
+    dns_domain          = var.dns_domain
+    cluster_name        = var.cluster_name
+    vm_folder           = var.vm_folder
 
     # vm
     template            = var.template
@@ -33,15 +36,6 @@ module "control_plane_nodes" {
     role_name           = var.cp_role_name
 
     # Customer Info
-    customer_name       = var.customer_name
-    customer_number     = var.customer_number
-    customer_tla        = var.customer_tla
-    infrastructure_owner = var.infrastructure_owner
-    service             = var.service
-    ufit                = var.ufit
-    criticality         = var.criticality
-    environment         = var.environment
-    datacenter          = var.datacenter
     users               = var.users
 
     # k3s pub key
@@ -53,9 +47,12 @@ module "agent_nodes" {
     source              = "./modules/nodes"
 
     # vsphere 
-    availability_zone   = var.availability_zone
-    datastore_cluster   = var.datastore_cluster
+    datacenter          = var.datacenter
+    datastore           = var.datastore
     resource_pool       = var.resource_pool
+    dns_domain          = var.dns_domain
+    cluster_name        = var.cluster_name
+    vm_folder           = var.vm_folder
 
     # vm
     template            = var.template
@@ -68,15 +65,6 @@ module "agent_nodes" {
     role_name           = var.worker_role_name
 
     # Customer Info
-    customer_name       = var.customer_name
-    customer_number     = var.customer_number
-    customer_tla        = var.customer_tla
-    infrastructure_owner = var.infrastructure_owner
-    service             = var.service
-    ufit                = var.ufit
-    criticality         = var.criticality
-    environment         = var.environment
-    datacenter          = var.datacenter
     users               = var.users
 
     # k3s pub key

@@ -15,16 +15,25 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 # vsphere
-
-variable "availability_zone" {
-  description = "Availability Zone (eg. AZ1, AZ2, AZ3) where to deploy the k3s cluster."
+variable "datacenter" {
+  description = "datacenter (eg. SSRB, UFDC, Any)"
   type        = string
-  default     = null
+  default     = "Any"
+}
 
-  validation {
-    condition     = contains(["AZ1", "AZ2", "AZ3"], var.availability_zone)
-    error_message = "The availability_zone variable must be one of: AZ1, AZ2, or AZ3."
-  }
+variable "dns_domain" {
+  description = "DNS domain to use for all deployed nodes"
+  type = string
+}
+
+variable "cluster_name" {
+  description = "Unique name for this k3s cluster"
+  type = string
+}
+
+variable "vm_folder" {
+  description = "vSphere folder where VM will be deployed"
+  type = string
 }
 
 # Node Info
@@ -73,31 +82,6 @@ variable "agent_network" {
 
 # customer Info
 
-variable "customer_name" {
-  description = "The business group name that the Cluster belongs to"
-  type        = string
-}
-
-variable "customer_number" {
-  description = "Customer number associated with the Business Group/Customer Name"
-  type        = string
-}
-variable "customer_tla" {
-  description = "Customer three letter acronym Group/Customer Name"
-  type        = string
-}
-
-variable "infrastructure_owner" {
-  description = "the UFIT unit that the Cluster belongs to"
-  type        = string
-  default     = ""
-}
-
-variable "service" {
-  description = "The service the Cluster supports"
-  type        = string
-}
-
 variable "users" {
   description = "users to add to the sudo group"
   type        = map(list(string))
@@ -127,9 +111,9 @@ variable "cp_role_name" {
 # These parameters have reasonable defaults.
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "datastore_cluster" {
+variable "datastore" {
   type = string
-  description = "Datastore Cluster in hosting.ufl.edu to deploy the k3s cluster to."
+  description = "Datastore to deploy the k3s cluster to."
   default = ""
 }
 
@@ -141,7 +125,6 @@ variable "resource_pool" {
 variable "template" {
   description = "template in vsphere to use when creating VM's"
   type       = string
-  default    = "Ubuntu 20.04 Cloud Init"
 }
 
 variable "cp_cpu" {
@@ -212,17 +195,6 @@ variable "environment" {
   validation {
     condition     = contains(["lab", "dev", "test", "qat","prod"], var.environment)
     error_message = "The environment variable must be one of: lab, dev, test, qat, or prod."
-  }
-}
-
-variable "datacenter" {
-  description = "datacenter (eg. SSRB, UFDC, Any)"
-  type        = string
-  default     = "Any"
-
-  validation {
-    condition     = contains(["SSRB","UFDC","Any"], var.datacenter)
-    error_message = "The datacenter variable must be one of: SSRB, UFDC, or Any."
   }
 }
 
