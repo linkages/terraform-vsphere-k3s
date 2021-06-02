@@ -27,3 +27,8 @@ variable "interface" {
     description = "Name of network interface"
     type = string
 }
+
+variable "distro" {
+  description = "linux distribution"
+  type = string
+}

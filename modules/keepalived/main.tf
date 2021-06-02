@@ -26,10 +26,12 @@ resource "null_resource" "keepalive" {
   count = length(var.control_plane_node_ips)
 
   provisioner "remote-exec" {
-    inline = [
+    inline = var.distro == "ubuntu" ? [
       "apt-get update -y",
       "sudo apt-get install linux-headers-$(uname -r) -y",
       "sudo apt-get install keepalived -y"
+    ] : [ 
+      "sudo pacman -Sy --noconfirm keepalived"
     ]
   }
 
@@ -39,9 +41,13 @@ resource "null_resource" "keepalive" {
   }
 
   provisioner "remote-exec" {
-    inline = [
+    inline = var.distro == "ubuntu" ? [
       "sudo mv ~/keepalived.conf /etc/keepalived/keepalived.conf",
       "sudo service keepalived start"
+    ] : [
+      "sudo mv ~/keepalived.conf /etc/keepalived/keepalived.conf",
+      "sudo systemctl start keepalived",
+      "sudo systemctl enable keepalived"
     ]
   }
 
