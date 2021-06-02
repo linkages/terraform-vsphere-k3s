@@ -22,8 +22,11 @@ module "control_plane_nodes" {
     datastore           = var.datastore
     resource_pool       = var.resource_pool
     dns_domain          = var.dns_domain
+    dns_servers         = var.dns_servers
     cluster_name        = var.cluster_name
     vm_folder           = var.vm_folder
+    metadata_file       = var.metadata_file
+    userdata_file       = var.userdata_file
 
     # vm
     template            = var.template
@@ -51,8 +54,11 @@ module "agent_nodes" {
     datastore           = var.datastore
     resource_pool       = var.resource_pool
     dns_domain          = var.dns_domain
+    dns_servers         = var.dns_servers
     cluster_name        = var.cluster_name
     vm_folder           = var.vm_folder
+    metadata_file       = var.metadata_file
+    userdata_file       = var.userdata_file
 
     # vm
     template            = var.template
@@ -81,6 +87,7 @@ resource "time_sleep" "node_creation" {
 module "keepalived" {
   source = "./modules/keepalived"
 
+  distro                  = var.distro == "" ? "ubuntu" : var.distro
   lb_address              = var.lb_address
   control_plane_node_ips  = slice(module.control_plane_nodes.Node-ip, 0, length(module.control_plane_nodes.Node-ip))
   ssh_user                = var.ssh_user

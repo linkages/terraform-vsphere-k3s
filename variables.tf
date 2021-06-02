@@ -26,6 +26,21 @@ variable "dns_domain" {
   type = string
 }
 
+variable "dns_servers" {
+  description = "List of DNS servers to query"
+  type = list
+}
+
+variable "metadata_file" {
+  description = "Metadata file passed to the VM"
+  type = string
+}
+
+variable "userdata_file" {
+  description = "Userdata file passed to the VM"
+  type = string
+}
+
 variable "cluster_name" {
   description = "Unique name for this k3s cluster"
   type = string
@@ -110,6 +125,11 @@ variable "cp_role_name" {
 # OPTIONAL PARAMETERS
 # These parameters have reasonable defaults.
 # ---------------------------------------------------------------------------------------------------------------------
+
+variable "distro" {
+  description = "Linux distro used by the VMs"
+  type = string
+}
 
 variable "datastore" {
   type = string
@@ -259,5 +279,5 @@ variable "lb_priority" {
 variable "interface" {
     description = "Name of network interface"
     type = string
-    default = "ens192"
+    default = "eth0"
 }
