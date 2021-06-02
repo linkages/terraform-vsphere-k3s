@@ -66,8 +66,23 @@ variable "dns_domain" {
   type = string
 }
 
+variable "dns_servers" {
+  description = "List of DNS servers"
+  type = list
+}
+
 variable "cluster_name" {
   description = "unique name for this cluster"
+  type = string
+}
+
+variable "metadata_file" {
+  description = "Template file used to create the extra config metadata"
+  type = string
+}
+
+variable "userdata_file" {
+  description = "Template file used to create the userdata passed to the VM"
   type = string
 }
 

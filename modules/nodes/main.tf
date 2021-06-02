@@ -85,21 +85,35 @@ resource "vsphere_virtual_machine" "node" {
   }
 
   extra_config = {
-    "guestinfo.metadata"  = base64encode(templatefile("${path.module}/templates/metadata.yaml.tpl", {
+    "guestinfo.metadata"  = var.metadata_file == "" ? base64encode(templatefile("${path.module}/templates/metadata.yaml.tpl", {
       hostname            = "k3s-${var.cluster_name}-${var.role_name}-${random_id.node.*.hex[count.index]}.${var.dns_domain}"
       instance_id         = "k3s-${var.cluster_name}-${var.role_name}-${random_id.node.*.hex[count.index]}"
       ipv4                = var.network[keys(var.network)[0]][count.index]
       ipv4_subnetmask     = var.subnetmask[0]
       ipv4_gateway        = var.gateway
+      dns_domain          = var.dns_domain
+      dns_servers         = var.dns_servers
+    })) : base64encode(templatefile("${var.metadata_file}", {
+      hostname            = "k3s-${var.cluster_name}-${var.role_name}-${random_id.node.*.hex[count.index]}.${var.dns_domain}"
+      instance_id         = "k3s-${var.cluster_name}-${var.role_name}-${random_id.node.*.hex[count.index]}"
+      ipv4                = var.network[keys(var.network)[0]][count.index]
+      ipv4_subnetmask     = var.subnetmask[0]
+      ipv4_gateway        = var.gateway
+      dns_domain          = var.dns_domain
+      dns_servers         = var.dns_servers
     }))
     "guestinfo.metadata.encoding" = "base64"
-    "guestinfo.userdata"          = base64encode(templatefile("${path.module}/templates/userdata.yaml.tpl", {
+    "guestinfo.userdata"          = var.userdata_file == "" ? base64encode(templatefile("${path.module}/templates/userdata.yaml.tpl", {
       k3s_pub_key = var.k3s_pub_key
       users = var.users
+      hostname = "k3s-${var.cluster_name}-${var.role_name}-${random_id.node.*.hex[count.index]}.${var.dns_domain}"
+    })) : base64encode(templatefile("${var.userdata_file}", {
+      k3s_pub_key = var.k3s_pub_key
+      users = var.users
+      hostname = "k3s-${var.cluster_name}-${var.role_name}-${random_id.node.*.hex[count.index]}.${var.dns_domain}"
     }))
     "guestinfo.userdata.encoding" = "base64"
   }
   
   lifecycle { ignore_changes = [clone.0.template_uuid] }
 }
-
